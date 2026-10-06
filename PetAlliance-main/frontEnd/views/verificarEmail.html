@@ -1,0 +1,25 @@
+
+<div class="verificacao-container">
+    <div class="verificacao-card">
+        <h2>Verifique seu email</h2>
+        <p>Enviamos um código de verificação para <strong><?= htmlspecialchars($usuario->getEmail()) ?></strong></p>
+        <p>Digite o código abaixo ou clique no link enviado por email.</p>
+
+        <div id="mensagem-erro" class="mensagem-erro" style="display:none;"></div>
+        <div id="mensagem-sucesso" class="mensagem-sucesso" style="display:none;"></div>
+
+        <form id="form-verificacao" method="POST">
+            <input type="hidden" name="usuario_id" value="<?= htmlspecialchars($usuarioId) ?>">
+            <label for="codigo">Código de verificação</label>
+            <input type="text" name="codigo" id="codigo" maxlength="6" placeholder="000000" required>
+            <button type="submit">Verificar</button>
+        </form>
+
+        <div class="reenviar">
+            <p>Não recebeu o código?</p>
+            <button id="btn-reenviar" onclick="reenviarCodigo()">Reenviar código</button>
+        </div>
+    </div>
+</div>
+
+<script src="../../frontEnd/utils/verificacaoEmail.js"></script>

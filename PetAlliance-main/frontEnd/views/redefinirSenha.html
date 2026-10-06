@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="/frontEnd/style/style.css">
+<link rel="stylesheet" href="/frontEnd/style/estilos.css">
+<div class="page-container" style="max-width:480px">
+  <div class="page-hero">
+    <h1 class="page-hero-title">Redefinir senha</h1>
+    <p class="page-hero-sub">Email: <strong><?= htmlspecialchars($emailOculto ?? '') ?></strong></p>
+  </div>
+
+  <div id="mensagem-erro" class="form-msg form-msg-error" style="display:none;"></div>
+  <div id="mensagem-sucesso" class="form-msg form-msg-success" style="display:none;"></div>
+
+  <div class="page-card page-card-border">
+    <form id="form-senha">
+      <label for="senha" class="form-label">Nova senha</label>
+      <input type="password" class="form-input" name="senha" id="senha" placeholder="Nova senha" minlength="3" required style="margin-bottom:0.75rem;">
+
+      <label for="confirmar_senha" class="form-label">Confirmar senha</label>
+      <input type="password" class="form-input" name="confirmar_senha" id="confirmar_senha" placeholder="Confirmar senha" minlength="3" required>
+
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:0.75rem;">Salvar nova senha</button>
+    </form>
+  </div>
+
+  <div style="text-align:center;margin-top:1rem">
+    <a href="/backEnd/usuario/loginUsuario.php" class="page-link">Voltar ao login</a>
+  </div>
+</div>
+
+<script src="../../frontEnd/utils/redefinirSenha.js"></script>

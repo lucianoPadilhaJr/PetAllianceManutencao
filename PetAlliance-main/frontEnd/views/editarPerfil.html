@@ -1,0 +1,46 @@
+<div style="max-width:400px;margin:2rem auto;padding:0 1rem;">
+  <div class="card" style="max-width:100%;padding:2rem 1.5rem;">
+    <a href="/backEnd/usuario/configuracoes.php" class="btn-back">&larr;</a>
+    <h1 class="form-title">Editar Perfil</h1>
+
+    <?php if ($_GET['sucesso'] ?? ''): ?>
+      <div class="form-msg form-msg-success">Perfil atualizado com sucesso!</div>
+    <?php elseif (!empty($erro)): ?>
+      <div class="form-msg form-msg-error"><?= htmlspecialchars($erro) ?></div>
+    <?php endif; ?>
+
+    <form method="POST" enctype="multipart/form-data">
+      <label class="form-label" for="nome">Nome:</label>
+      <input class="form-input" type="text" name="nome" id="nome" value="<?= htmlspecialchars($usuarioAtual->getNome()) ?>" required>
+
+      <label class="form-label" for="cep">CEP:</label>
+      <input class="form-input" type="text" name="cep" id="cep" value="<?= htmlspecialchars($usuarioAtual->getCep()) ?>" maxlength="9" placeholder="Seu CEP">
+
+      <label class="form-label">Foto de perfil:</label>
+      <img src="/uploads/usuario/<?= htmlspecialchars($usuarioAtual->getImagem() ?: 'placeholder.webp') ?>"
+           id="preview-foto"
+           style="width:120px;height:120px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 0.75rem;border:3px solid var(--primary-bg);">
+      <input class="form-input" type="file" name="imagemPerfil" id="input-foto" accept="image/*" style="padding:0.4rem;font-size:0.8rem;">
+      <p style="font-size:0.78rem;color:var(--text-muted);margin:-0.5rem 0 1rem;">Deixe em branco para manter a foto atual.</p>
+
+      <button type="submit" class="btn btn-primary" style="width:100%;">Salvar</button>
+    </form>
+
+    <div style="display:flex;justify-content:space-between;margin-top:1rem;">
+      <a href="/backEnd/usuario/alterarEmail.php" class="form-link">Alterar email</a>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.getElementById('input-foto')?.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('preview-foto').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>

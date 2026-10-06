@@ -1,0 +1,237 @@
+﻿<div style="max-width:600px;margin:0 auto; padding: 5rem;">
+  <form method="POST" enctype="multipart/form-data">
+    <a href="/backEnd/home.php" class="btn-back">&larr;</a>
+    <h1 class="form-title">Editar Animal</h1>
+
+    <?php if (!empty($erro)): ?>
+      <div class="form-msg form-msg-error"><?= htmlspecialchars($erro) ?></div>
+    <?php endif; ?>
+
+    <?php if (!empty($sucesso)): ?>
+      <div class="form-msg form-msg-success"><?= htmlspecialchars($sucesso) ?></div>
+    <?php endif; ?>
+
+    <?php if (!empty($fotos)): ?>
+      <label class="form-label">Fotos atuais:</label>
+      <div id="fotos-atuais" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <?php foreach ($fotos as $i => $foto): ?>
+          <div style="position:relative;display:inline-block;" data-foto-path="<?= htmlspecialchars($foto) ?>">
+            <img src="/uploads/animais/<?= htmlspecialchars($foto) ?>" alt="Foto <?= $i+1 ?>" style="width:120px;height:120px;object-fit:cover;border-radius:0.5rem;border:1px solid var(--border);">
+            <button type="button" class="btn-remove-foto-existente" data-foto-path="<?= htmlspecialchars($foto) ?>" style="position:absolute;top:-6px;right:-6px;background:#e74c3c;color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:14px;line-height:1;cursor:pointer;">&times;</button>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+
+    <label class="form-label">Adicionar novas fotos (m&aacute;ximo 10):</label>
+    <div id="fotos-scroll-wrapper" style="overflow-x:auto;white-space:nowrap;padding:0.5rem 0;margin-bottom:0.75rem;">
+      <div id="fotos-container" style="display:inline-flex;gap:0.75rem;">
+        <div class="foto-input-group" style="display:inline-flex;flex-direction:column;align-items:center;min-width:130px;">
+          <img src="/uploads/usuario/placeholder.webp" class="preview-foto" style="width:120px;height:120px;object-fit:cover;border-radius:0.5rem;border:1px solid var(--border);" alt="Preview">
+          <input type="file" name="novas_fotos[]" class="input-foto" accept="image/jpeg,image/png,image/webp" style="font-size:0.7rem;width:100%;margin-top:0.25rem;">
+          <button type="button" class="btn-remove-foto" style="margin-top:0.25rem;display:none;">Remover</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem;">
+      <button type="button" id="btn-add-foto" class="btn btn-ghost" style="padding:0.25rem 0.75rem;font-size:0.85rem;">+ Adicionar foto</button>
+      <span id="foto-counter" style="font-size:0.8rem;color:var(--text-muted);">1 de 10 fotos</span>
+    </div>
+
+    <label class="form-label" for="nome">Nome do animal:</label>
+    <input class="form-input" type="text" name="nome" id="nome" minlength="3" maxlength="80" placeholder="Nome do animal" value="<?= htmlspecialchars($animal->getNome()) ?>" required>
+
+    <label class="form-label" for="tipo">Tipo de animal:</label>
+    <select class="form-input" name="tipo" id="tipo" required>
+      <option value="" disabled>Selecione</option>
+      <option value="Cachorro" <?= $animal->getTipo() === 'Cachorro' ? 'selected' : '' ?>>Cachorro</option>
+      <option value="Gato" <?= $animal->getTipo() === 'Gato' ? 'selected' : '' ?>>Gato</option>
+      <option value="Cavalo" <?= $animal->getTipo() === 'Cavalo' ? 'selected' : '' ?>>Cavalo</option>
+      <option value="Outro" <?= $animal->getTipo() === 'Outro' ? 'selected' : '' ?>>Outro</option>
+    </select>
+
+    <label class="form-label" for="raca">Ra&ccedil;a:</label>
+    <input class="form-input" type="text" name="raca" id="raca" minlength="3" maxlength="80" placeholder="Ra&ccedil;a" value="<?= htmlspecialchars($animal->getRaca()) ?>" required>
+
+    <label class="form-label" for="cor">Cor:</label>
+    <select class="form-input" name="cor" id="cor" required>
+      <option value="" disabled>Selecione</option>
+      <option value="Preto" <?= $animal->getCor() === 'Preto' ? 'selected' : '' ?>>Preto</option>
+      <option value="Branco" <?= $animal->getCor() === 'Branco' ? 'selected' : '' ?>>Branco</option>
+      <option value="Cinza" <?= $animal->getCor() === 'Cinza' ? 'selected' : '' ?>>Cinza</option>
+      <option value="Marrom" <?= $animal->getCor() === 'Marrom' ? 'selected' : '' ?>>Marrom</option>
+      <option value="Outro" <?= $animal->getCor() === 'Outro' ? 'selected' : '' ?>>Outro</option>
+    </select>
+
+    <label class="form-label" for="sexo">Sexo:</label>
+    <select class="form-input" name="sexo" id="sexo" required>
+      <option value="" disabled>Selecione</option>
+      <option value="Macho" <?= $animal->getSexo() === 'Macho' ? 'selected' : '' ?>>Macho</option>
+      <option value="F&ecirc;mea" <?= $animal->getSexo() === 'FÃªmea' ? 'selected' : '' ?>>FÃªmea</option>
+    </select>
+
+    <label class="form-label" for="porte">Porte:</label>
+    <select class="form-input" name="porte" id="porte" required>
+      <option value="" disabled>Selecione</option>
+      <option value="Pequeno" <?= $animal->getPorte() === 'Pequeno' ? 'selected' : '' ?>>Pequeno</option>
+      <option value="M&eacute;dio" <?= $animal->getPorte() === 'MÃ©dio' ? 'selected' : '' ?>>M&eacute;dio</option>
+      <option value="Grande" <?= $animal->getPorte() === 'Grande' ? 'selected' : '' ?>>Grande</option>
+    </select>
+
+    <label class="form-label" for="dt_nascimento">Data de Nascimento:</label>
+    <input class="form-input" type="date" min="1900-01-01" name="dt_nascimento" id="dt_nascimento" value="<?= htmlspecialchars($animal->getDataNascimento()) ?>" required>
+
+    <label class="form-label" for="peso">Peso (kg):</label>
+    <input class="form-input" type="number" min="0" step="0.01" name="peso" id="peso" placeholder="Ex: 5.5" value="<?= htmlspecialchars($animal->getPeso()) ?>" required>
+
+    <label class="form-label" for="descricao">Descri&ccedil;&atilde;o:</label>
+    <textarea class="form-input" style="min-width: 600px; max-width: 600px; min-height: 50px;" name="descricao" id="descricao" minlength="10" maxlength="200" placeholder="Descri&ccedil;&atilde;o" required><?= htmlspecialchars($animal->getDescricao()) ?></textarea>
+
+    <label class="form-label" for="vacinado">Vacinado?</label>
+    <select class="form-input" id="vacinado" name="vacinado" required>
+      <option value="" disabled selected>Sim ou n&atilde;o</option>
+      <option value="1" <?= $animal->getVacinado() == 1 ? 'selected' : '' ?>>Sim</option>
+      <option value="0" <?= $animal->getVacinado() == 0 ? 'selected' : '' ?>>N&atilde;o</option>
+    </select>
+
+    <label class="form-label" for="certificado">Possui Certificado de ra&ccedil;a?</label>
+    <select class="form-input" id="certificado" name="certificado" required>
+      <option value="" disabled selected>Sim ou n&atilde;o</option>
+      <option value="1" <?= $animal->getCertificado() == 1 ? 'selected' : '' ?>>Sim</option>
+      <option value="0" <?= $animal->getCertificado() == 0 ? 'selected' : '' ?>>N&atilde;o</option>
+    </select>
+
+    <div id="campoCertificado" style="display:none;">
+      <label class="form-label" for="arquivoCertificado">Enviar Certificado:</label>
+      <input class="form-input" type="file" name="arquivoCertificado" id="arquivoCertificado">
+    </div>
+
+    <div id="campoVacinacao" style="display:none;">
+      <label class="form-label" for="arquivoVacinacao">Enviar carteira de vacina&ccedil;&atilde;o:</label>
+      <input class="form-input" type="file" name="arquivoVacinacao" id="arquivoVacinacao">
+    </div>
+
+    <div style="display:flex;gap:0.5rem;justify-content:flex-end;margin-top:0.5rem;">
+      <button type="submit" class="btn btn-primary" style="flex:1;">Atualizar</button>
+    </div>
+  </form>
+</div>
+
+<script>
+    const maxFotos = 10;
+    const container = document.getElementById('fotos-container');
+    const btnAdd = document.getElementById('btn-add-foto');
+    const counter = document.getElementById('foto-counter');
+    const wrapper = document.getElementById('fotos-scroll-wrapper');
+
+    function updateCounter() {
+        const total = container.querySelectorAll('.foto-input-group').length;
+        counter.textContent = total + ' de ' + maxFotos + ' fotos';
+        btnAdd.style.display = total >= maxFotos ? 'none' : 'inline-block';
+    }
+
+    container.addEventListener('change', function(e) {
+        if (e.target.classList.contains('input-foto')) {
+            const group = e.target.closest('.foto-input-group');
+            const preview = group.querySelector('.preview-foto');
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    preview.src = ev.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    });
+
+    btnAdd.addEventListener('click', function() {
+        const total = container.querySelectorAll('.foto-input-group').length;
+        if (total >= maxFotos) return;
+
+        const group = document.createElement('div');
+        group.className = 'foto-input-group';
+        group.style.cssText = 'display:inline-flex;flex-direction:column;align-items:center;min-width:130px;';
+        group.innerHTML =
+            '<img src="/uploads/usuario/placeholder.webp" class="preview-foto" style="width:120px;height:120px;object-fit:cover;border-radius:0.5rem;border:1px solid var(--border);" alt="Preview">' +
+            '<input type="file" name="novas_fotos[]" class="input-foto" accept="image/jpeg,image/png,image/webp" style="font-size:0.7rem;width:100%;margin-top:0.25rem;">' +
+            '<button type="button" class="btn-remove-foto" style="margin-top:0.25rem;">Remover</button>';
+        container.appendChild(group);
+        wrapper.scrollLeft = wrapper.scrollWidth;
+        updateCounter();
+    });
+
+    container.addEventListener('click', function(e) {
+        if (e.target.classList.contains('btn-remove-foto')) {
+            const group = e.target.closest('.foto-input-group');
+            if (container.querySelectorAll('.foto-input-group').length <= 1) return;
+            group.remove();
+            updateCounter();
+        }
+    });
+
+    updateCounter();
+
+    const fotosAtuais = document.getElementById('fotos-atuais');
+    if (fotosAtuais) {
+        fotosAtuais.addEventListener('click', async function(e) {
+            const btn = e.target.closest('.btn-remove-foto-existente');
+            if (!btn) return;
+            if (!confirm('Remover esta foto?')) return;
+
+            const fotoPath = btn.dataset.fotoPath;
+            const div = btn.closest('[data-foto-path]');
+
+            try {
+                const resp = await fetch('/backEnd/home.php?route=remover_foto', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        pet_id: <?= $animal->getId() ?>,
+                        foto_path: fotoPath
+                    }),
+                    credentials: 'same-origin'
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    div.remove();
+                } else {
+                    alert('Erro: ' + (data.error || 'Erro desconhecido'));
+                }
+            } catch (err) {
+                alert('Erro de conexÃ£o.');
+            }
+        });
+    }
+
+    const selectVacinado = document.getElementById('vacinado');
+    const campoVacinacao = document.getElementById('campoVacinacao');
+    const selectCertificado = document.getElementById('certificado');
+    const campoCertificado = document.getElementById('campoCertificado');
+
+    function toggleVacinacao() {
+        campoVacinacao.style.display = selectVacinado.value === '1' ? 'block' : 'none';
+        const input = campoVacinacao.querySelector('input');
+        if (selectVacinado.value !== '1') input.removeAttribute('required');
+        else input.setAttribute('required', '');
+    }
+
+    function toggleCertificado() {
+        campoCertificado.style.display = selectCertificado.value === '1' ? 'block' : 'none';
+        const input = campoCertificado.querySelector('input');
+        if (selectCertificado.value !== '1') input.removeAttribute('required');
+        else input.setAttribute('required', '');
+    }
+
+    selectVacinado.addEventListener('change', toggleVacinacao);
+    selectCertificado.addEventListener('change', toggleCertificado);
+
+    if (selectVacinado.value === '1') toggleVacinacao();
+    if (selectCertificado.value === '1') toggleCertificado();
+</script>
+
+<script src="../../frontEnd/utils/animalSalvos.js"></script>
+<script src="../../frontEnd/utils/animalFuncoes.js"></script>
+<script src="../../frontEnd/utils/animalValidacao.js"></script>
+
+<?php require __DIR__ . "/../../frontEnd/views/footer.html"; ?>

@@ -1,0 +1,80 @@
+<div style="max-width:400px;margin:2rem auto;padding:0 1rem;">
+  <div class="card" style="max-width:100%;padding:2rem 1.5rem;">
+    <a href="/backEnd/usuario/configuracoes.php" class="btn-back">&larr;</a>
+    <h1 class="form-title">Alterar Email</h1>
+
+    <?php if ($sucesso): ?>
+      <div class="form-msg form-msg-success">Email alterado com sucesso!</div>
+      <a href="/backEnd/usuario/perfil.php" class="btn btn-primary" style="display:block;width:100%;">Voltar ao perfil</a>
+
+    <?php elseif ($erro === 'senha_incorreta'): ?>
+      <div class="form-msg form-msg-error">Senha incorreta.</div>
+    <?php elseif ($erro === 'email_invalido'): ?>
+      <div class="form-msg form-msg-error">Novo email inv&aacute;lido.</div>
+    <?php elseif ($erro === 'email_igual'): ?>
+      <div class="form-msg form-msg-error">O novo email &eacute; igual ao atual.</div>
+    <?php elseif ($erro === 'codigo_invalido'): ?>
+      <div class="form-msg form-msg-error">C&oacute;digo inv&aacute;lido ou expirado.</div>
+    <?php elseif ($erro === 'codigo_invalido_novo'): ?>
+      <div class="form-msg form-msg-error">C&oacute;digo do novo email inv&aacute;lido ou expirado.</div>
+    <?php elseif ($_GET['reenviado'] ?? ''): ?>
+      <div class="form-msg form-msg-success">C&oacute;digo reenviado! Verifique seu email.</div>
+    <?php endif; ?>
+
+    <?php if ($sucesso): ?>
+      <!-- done -->
+    <?php elseif ($etapa === 'codigo_atual'): ?>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">
+        Enviamos um c&oacute;digo para <strong><?= htmlspecialchars($usuarioAtual->getEmail()) ?></strong>
+      </p>
+      <form method="POST">
+        <input type="hidden" name="route" value="verificar_codigo_atual">
+        <label class="form-label" for="codigo_atual">C&oacute;digo de verifica&ccedil;&atilde;o:</label>
+        <input class="form-input" type="text" name="codigo" id="codigo_atual" maxlength="6" placeholder="000000" style="text-align:center;font-size:1.2rem;letter-spacing:0.5rem;" required>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Verificar</button>
+      </form>
+      <div style="display:flex;justify-content:space-between;margin-top:0.75rem;">
+        <form method="POST" style="display:inline;margin:0;">
+          <input type="hidden" name="route" value="reenviar">
+          <input type="hidden" name="tipo" value="atual">
+          <button type="submit" class="btn-ghost" style="font-size:0.8rem;">Reenviar c&oacute;digo</button>
+        </form>
+        <a href="/backEnd/usuario/alterarEmail.php" class="form-link" style="font-size:0.8rem;">Recome&ccedil;ar</a>
+      </div>
+
+    <?php elseif ($etapa === 'codigo_novo'): ?>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">
+        Enviamos um c&oacute;digo para <strong><?= htmlspecialchars($_SESSION['novo_email_pendente'] ?? '') ?></strong>
+      </p>
+      <form method="POST">
+        <input type="hidden" name="route" value="verificar_codigo_novo">
+        <label class="form-label" for="codigo_novo">C&oacute;digo de verifica&ccedil;&atilde;o:</label>
+        <input class="form-input" type="text" name="codigo" id="codigo_novo" maxlength="6" placeholder="000000" style="text-align:center;font-size:1.2rem;letter-spacing:0.5rem;" required>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Confirmar novo email</button>
+      </form>
+      <div style="display:flex;justify-content:space-between;margin-top:0.75rem;">
+        <form method="POST" style="display:inline;margin:0;">
+          <input type="hidden" name="route" value="reenviar">
+          <input type="hidden" name="tipo" value="novo">
+          <button type="submit" class="btn-ghost" style="font-size:0.8rem;">Reenviar c&oacute;digo</button>
+        </form>
+        <a href="/backEnd/usuario/alterarEmail.php" class="form-link" style="font-size:0.8rem;">Recome&ccedil;ar</a>
+      </div>
+
+    <?php else: ?>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">
+        Email atual: <strong><?= htmlspecialchars($usuarioAtual->getEmail()) ?></strong>
+      </p>
+      <form method="POST">
+        <input type="hidden" name="route" value="confirmar_senha">
+        <label class="form-label" for="novo_email">Novo email:</label>
+        <input class="form-input" type="email" name="novo_email" id="novo_email" placeholder="Novo email" required>
+
+        <label class="form-label" for="senha_atual">Senha atual:</label>
+        <input class="form-input" type="password" name="senha" id="senha_atual" placeholder="Sua senha" required>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;">Solicitar altera&ccedil;&atilde;o</button>
+      </form>
+      <?php endif; ?>
+  </div>
+</div>

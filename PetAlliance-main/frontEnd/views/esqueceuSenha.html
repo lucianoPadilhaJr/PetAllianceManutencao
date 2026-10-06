@@ -1,0 +1,23 @@
+<div class="page-container" style="max-width:480px">
+  <div class="page-hero">
+    <h1 class="page-hero-title">Recuperar senha</h1>
+    <p class="page-hero-sub">Digite seu CPF ou email para receber o link de recuperacao</p>
+  </div>
+
+  <div id="mensagem-erro"></div>
+  <div id="mensagem-sucesso"></div>
+
+  <div class="page-card page-card-border">
+    <form id="form-recuperar" class="form-recuperar">
+      <label for="cpf">CPF ou Email</label>
+      <input type="text" name="cpf" id="cpf" placeholder="Seu CPF ou email" value="<?= htmlspecialchars($cpfSalvo ?? '') ?>" required>
+      <button type="submit" id="btn-enviar" class="btn btn-primary">Enviar</button>
+    </form>
+  </div>
+
+  <div style="text-align:center;margin-top:1rem">
+    <a href="/backEnd/usuario/loginUsuario.php" class="page-link">Voltar ao login</a>
+  </div>
+</div>
+
+<script src="../../frontEnd/utils/esqueceuSenha.js"></script>

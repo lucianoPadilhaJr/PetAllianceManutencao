@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Colocar numeros nos prints - PetAlliance</title>
+<style>
+  body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; background: #eef1f5; color: #222; }
+  header { background: #2E7D32; color: #fff; padding: 10px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  header h1 { font-size: 17px; margin: 0; margin-right: 8px; }
+  #selArquivo { padding: 6px 8px; font-size: 14px; border-radius: 4px; border: none; max-width: 260px; }
+  .btn { background: #fff; color: #2E7D32; border: none; padding: 8px 13px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13.5px; }
+  .btn:hover { background: #dcedc8; }
+  .btn.primario { background: #1b5e20; color: #fff; }
+  .btn.primario:hover { background: #2e7d32; }
+  .btn.perigo { color: #c62828; }
+  #status { font-size: 12.5px; color: #ffe082; margin-left: 4px; }
+  .espaco { flex: 1; }
+  main { display: flex; gap: 16px; padding: 16px; align-items: flex-start; flex-wrap: wrap; }
+  #moldura { position: relative; background: #fff; border: 1px solid #ccc; box-shadow: 0 2px 10px rgba(0,0,0,.18); display: inline-block; max-width: min(1300px, calc(100vw - 440px)); }
+  #img { display: block; width: 100%; height: auto; }
+  .num { position: absolute; transform: translate(-50%,-50%); border-radius: 50%;
+         color: #fff; font-weight: bold; font-family: Arial; text-align: center; cursor: grab; user-select: none;
+         border: 3px solid #fff; box-shadow: 0 2px 7px rgba(0,0,0,.45); }
+  .num.sel { outline: 3px dashed #ffd600; outline-offset: 3px; }
+  #painel { background: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 14px; min-width: 300px; max-width: 400px; box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+  #painel h2 { margin: 0 0 8px; font-size: 15px; color: #1b5e20; }
+  .item { display: flex; align-items: center; gap: 10px; padding: 6px 4px; border-bottom: 1px solid #eee; font-size: 13.5px; }
+  .chip { width: 27px; height: 27px; border-radius: 50%; color: #fff; font: bold 14px/27px Arial; text-align: center; flex: none; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+  .item.colocado .chip { outline: 2px solid #2E7D32; outline-offset: 1px; }
+  #dica { font-size: 12.5px; color: #555; margin-top: 12px; line-height: 1.55; background: #f7faf7; border: 1px solid #dcedc8; border-radius: 6px; padding: 10px; }
+  #dica b { color: #1b5e20; }
+  #aviso { display: none; color: #c62828; font-size: 13px; font-weight: bold; padding: 6px 10px; background: #ffebee; border-radius: 6px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🐾 Numerar prints do manual</h1>
+  <select id="selArquivo"></select>
+  <button class="btn" id="btnAnt">◀ Anterior</button>
+  <button class="btn" id="btnProx">Próxima ▶</button>
+  <span id="status"></span>
+  <span class="espaco"></span>
+  <button class="btn perigo" id="btnLimpar">Limpar números</button>
+  <button class="btn" id="btnDesfazer">Desfazer</button>
+  <button class="btn primario" id="btnSalvar">⬇ Salvar PNG</button>
+  <button class="btn primario" id="btnSalvarTodas">⬇ Salvar todas</button>
+  <button class="btn primario" id="btnZip">⬇ Salvar TODAS (1 ZIP)</button>
+  <button class="btn" id="btnExp">📤 Exportar posições (.json)</button>
+</header>
+<main>
+  <div>
+    <div id="aviso">Não foi possível baixar a imagem (navegador bloqueou). Clique em "Salvar PNG" novamente e permita o download.</div>
+    <div id="moldura">
+      <img id="img" alt="print" draggable="false">
+    </div>
+  </div>
+  <div id="painel">
+    <h2>Números desta tela</h2>
+    <div id="lista"></div>
+    <div id="dica">
+      <b>Como usar:</b><br>
+      1. Clique sobre o elemento na imagem para soltar o <b>próximo número</b> (na ordem da legenda).<br>
+      2. <b>Arraste</b> o número para ajustar a posição.<br>
+      3. Clique em um número e aperte <b>Delete</b> para removê-lo.<br>
+      4. Clique em <b>Salvar PNG</b> e salve o arquivo com o <b>mesmo nome</b> dentro da pasta <b>prints_manual</b> (substitua o original).<br>
+      <b>Salvar TODAS (1 ZIP)</b> baixa <b>um único arquivo</b> com todas as telas numeradas (o Chrome bloqueia vários downloads de uma vez — por isso o "Salvar todas" antigo não salvava).<br>
+      <b>Exportar posições</b> baixa um .json com as posições — pode me enviar que eu gero as imagens automaticamente.
+    </div>
+  </div>
+</main>
+<script src="jszip.min.js"></script>
+<script>
+"use strict";
+
+// ---------------- dados das telas (ordem = numero de cada bolinha) ----------------
+var VERMELHO = "#D32F2F";
+var AZUL = "#1565C0";
+var ARQUIVOS = [
+  { nome: "01-entrar.png", itens: [
+    { t: "Ja tenho cadastro: clico aqui em ENTRAR", c: VERMELHO },
+    { t: "Sou nova no site: clico em CADASTRAR", c: AZUL },
+    { t: "Sobre nos: conhecer o projeto", c: AZUL } ] },
+  { nome: "02-login.png", itens: [
+    { t: "Digito meu CPF (so numeros)", c: VERMELHO },
+    { t: "Digito minha senha", c: VERMELHO },
+    { t: "Clico em ENTRAR", c: AZUL },
+    { t: "Esqueci a senha: clico aqui", c: AZUL },
+    { t: "Voltar para a pagina inicial", c: VERMELHO } ] },
+  { nome: "03-cadastro.png", itens: [
+    { t: "Meu nome completo", c: VERMELHO },
+    { t: "Meu CPF", c: VERMELHO },
+    { t: "Meu CEP", c: VERMELHO },
+    { t: "Meu e-mail", c: VERMELHO },
+    { t: "Crio uma senha", c: VERMELHO },
+    { t: "Marco aqui (obrigatorio)", c: AZUL },
+    { t: "Clico em AVANCAR", c: AZUL },
+    { t: "Voltar para a tela anterior", c: VERMELHO } ] },
+  { nome: "04-esqueceu-senha.png", itens: [
+    { t: "Digito meu CPF ou e-mail", c: VERMELHO },
+    { t: "Clico em ENVIAR (recebo um codigo no e-mail)", c: AZUL },
+    { t: "Voltar ao login", c: AZUL } ] },
+  { nome: "05-home.png", itens: [
+    { t: "Meus animais favoritos", c: VERMELHO },
+    { t: "MENU: todas as telas do site", c: VERMELHO },
+    { t: "Pesquiso por nome ou raca", c: VERMELHO },
+    { t: "Filtros: porte, cor, tipo...", c: VERMELHO },
+    { t: "Animais em destaque", c: AZUL },
+    { t: "Pet de outro criador: envio pedido de match", c: AZUL },
+    { t: "Ver Detalhes do animal", c: VERMELHO },
+    { t: "Meu Perfil: minha foto e meus dados (avatar no topo)", c: VERMELHO },
+    { t: "Home: voltar para a pagina inicial", c: VERMELHO } ] },
+  { nome: "06-detalhes.png", itens: [
+    { t: "Coracao: salvar nos favoritos", c: VERMELHO },
+    { t: "Enviar pedido de match", c: AZUL },
+    { t: "Reportar problema", c: AZUL },
+    { t: "Fechar (X)", c: VERMELHO },
+    { t: "Ver a foto anterior", c: VERMELHO },
+    { t: "Passar para a proxima foto", c: VERMELHO } ] },
+  { nome: "07-meus-animais.png", itens: [
+    { t: "Ver detalhes do meu pet", c: VERMELHO },
+    { t: "Editar dados do pet", c: AZUL },
+    { t: "Excluir pet (cuidado!)", c: AZUL },
+    { t: "Destacar meu pet (fica no topo da Home)", c: AZUL },
+    { t: "Remover Destaque", c: VERMELHO } ] },
+  { nome: "08-cadastrar-animal.png", itens: [
+    { t: "Fotos do animal (ate 10)", c: VERMELHO },
+    { t: "+ Adicionar foto", c: AZUL },
+    { t: "Nome do animal", c: VERMELHO },
+    { t: "Tipo (Cachorro, Gato, Cavalo, Outro)", c: VERMELHO },
+    { t: "Raca", c: VERMELHO },
+    { t: "Cor do animal", c: VERMELHO },
+    { t: "Sexo (Macho/Femea)", c: VERMELHO },
+    { t: "Porte (Pequeno, Medio, Grande)", c: VERMELHO },
+    { t: "Data de nascimento", c: VERMELHO },
+    { t: "Peso (ex.: 5.5 kg)", c: VERMELHO },
+    { t: "Descricao (ex.: temperamento)", c: VERMELHO },
+    { t: "Vacinado (Sim/Nao)", c: VERMELHO },
+    { t: "Certificado (Sim/Nao)", c: VERMELHO },
+    { t: "Clico em CADASTRAR", c: AZUL } ] },
+  { nome: "09-favoritos.png", itens: [
+    { t: "Remover dos favoritos (clicar no coracao)", c: VERMELHO },
+    { t: "Ver Detalhes do animal", c: VERMELHO },
+    { t: "Iniciar Chat: match ja aceito com este pet", c: AZUL },
+    { t: "Enviar Match: pedir match com este pet", c: AZUL } ] },
+  { nome: "10-notificacoes.png", itens: [
+    { t: "Match aceito: Iniciar Chat com a pessoa", c: AZUL },
+    { t: "Status do pedido (ex.: Recusado)", c: VERMELHO },
+    { t: "Pedido recebido: Aceitar", c: AZUL },
+    { t: "Pedido recebido: Recusar", c: VERMELHO },
+    { t: "Match aceito: Marcar como lida", c: VERMELHO },
+    { t: "Match recusado: Marcar como lida", c: VERMELHO } ] },
+  { nome: "11-chat.png", itens: [
+    { t: "Minhas conversas", c: VERMELHO },
+    { t: "Escrevo minha mensagem aqui", c: AZUL },
+    { t: "Clico em ENVIAR", c: AZUL } ] },
+  { nome: "12-perfil.png", itens: [
+    { t: "Minha foto e meus dados", c: VERMELHO },
+    { t: "Trocar meu e-mail", c: AZUL } ] },
+  { nome: "13-configuracoes.png", itens: [
+    { t: "Editar Perfil: muda meus dados", c: VERMELHO },
+    { t: "Alterar Email: troca o e-mail da conta", c: VERMELHO },
+    { t: "Alterar Senha: troca minha senha", c: VERMELHO },
+    { t: "Relatar Problema: denuncio um problema no site", c: AZUL },
+    { t: "Pagamentos: vejo meu historico", c: AZUL },
+    { t: "Sobre: conhecer o projeto", c: AZUL },
+    { t: "Sair da Conta: encerro a sessao", c: VERMELHO } ] },
+  { nome: "14-planos.png", itens: [
+    { t: "Escolho o plano e clico em ASSINAR AGORA", c: AZUL },
+    { t: "Profissional: o mais popular", c: VERMELHO } ] },
+  { nome: "15-modal-pagamento.png", itens: [
+    { t: "Clico em PAGAR (vou para o AbacatePay)", c: AZUL },
+    { t: "Cancelar", c: VERMELHO },
+    { t: "Fechar a janela (X)", c: VERMELHO } ] },
+  { nome: "16-pagamentos.png", itens: [
+    { t: "Historico dos meus pagamentos (PENDENTE = aguardando confirmacao, PAGO = plano ativo)", c: VERMELHO } ] },
+  { nome: "17-denuncia.png", itens: [
+    { t: "Explico o problema aqui", c: VERMELHO },
+    { t: "Envio a denuncia", c: AZUL },
+    { t: "Voltar", c: VERMELHO } ] },
+  { nome: "18-admin-denuncias.png", itens: [
+    { t: "Denuncias recebidas dos usuarios", c: VERMELHO },
+    { t: "Marcar como concluida", c: AZUL } ] },
+  { nome: "19-admin-estatisticas.png", itens: [
+    { t: "Estatisticas do site", c: AZUL } ] }
+];
+
+// ---------------- estado ----------------
+var CHAVE = "pa_numeros_v1_";
+var indice = 0;
+var posicoes = [];        // [{n, x%, y%}] numeros colocados na tela atual
+var selecionado = null;   // n selecionado
+var arrastando = null;
+
+var selArquivo = document.getElementById("selArquivo");
+var img = document.getElementById("img");
+var moldura = document.getElementById("moldura");
+var lista = document.getElementById("lista");
+var statusEl = document.getElementById("status");
+var aviso = document.getElementById("aviso");
+
+function chave(nome) { return CHAVE + nome; }
+function lerPos(nome) { try { return JSON.parse(localStorage.getItem(chave(nome))) || []; } catch (e) { return []; } }
+function gravarPos(nome) { localStorage.setItem(chave(nome), JSON.stringify(posicoes)); }
+
+function tamanhoBolinha() {
+  var largura = moldura.offsetWidth || 880;
+  return Math.max(12, Math.min(22, largura * 0.018));
+}
+
+function aplicarTamanhos() {
+  var d = tamanhoBolinha();
+  moldura.querySelectorAll(".num").forEach(function (el) {
+    el.style.width = d + "px";
+    el.style.height = d + "px";
+    el.style.lineHeight = d + "px";
+    el.style.fontSize = Math.round(d * 0.52) + "px";
+  });
+}
+
+function totalTelasComNumeros() {
+  var n = 0;
+  ARQUIVOS.forEach(function (a) { if (lerPos(a.nome).length > 0) n++; });
+  return n;
+}
+
+function proximoNumero() {
+  for (var n = 1; n <= ARQUIVOS[indice].itens.length; n++) {
+    if (!posicoes.some(function (p) { return p.n === n; })) return n;
+  }
+  return null;
+}
+
+function corDoNumero(n) { return ARQUIVOS[indice].itens[n - 1].c; }
+
+// ---------------- render ----------------
+function render() {
+  var arquivo = ARQUIVOS[indice];
+  posicoes = lerPos(arquivo.nome);
+  // remove posicoes de numeros que nao existem mais nesta tela
+  posicoes = posicoes.filter(function (p) { return p.n >= 1 && p.n <= ARQUIVOS[indice].itens.length; });
+  gravarPos(arquivo.nome);
+  selecionado = null;
+  selArquivo.value = arquivo.nome;
+  img.src = arquivo.nome;
+
+  // limpa numeros antigos
+  moldura.querySelectorAll(".num").forEach(function (el) { el.remove(); });
+
+  posicoes.forEach(function (p) {
+    var div = document.createElement("div");
+    div.className = "num";
+    div.dataset.n = p.n;
+    div.style.left = p.x + "%";
+    div.style.top = p.y + "%";
+    div.style.background = corDoNumero(p.n);
+    div.textContent = p.n;
+    moldura.appendChild(div);
+  });
+
+  aplicarTamanhos();
+
+  // legenda
+  lista.innerHTML = "";
+  ARQUIVOS[indice].itens.forEach(function (it, i) {
+    var div = document.createElement("div");
+    div.className = "item" + (posicoes.some(function (p) { return p.n === i + 1; }) ? " colocado" : "");
+    var chip = document.createElement("span");
+    chip.className = "chip";
+    chip.style.background = it.c;
+    chip.textContent = i + 1;
+    var txt = document.createElement("span");
+    txt.textContent = it.t;
+    div.appendChild(chip);
+    div.appendChild(txt);
+    lista.appendChild(div);
+  });
+
+  statusEl.textContent = "(" + (indice + 1) + "/" + ARQUIVOS.length + ")  " + posicoes.length + "/" + ARQUIVOS[indice].itens.length + " numeros | " + totalTelasComNumeros() + "/" + ARQUIVOS.length + " telas com numeros";
+}
+
+// ---------------- adicionar / remover ----------------
+function adicionarNumero(xPct, yPct) {
+  var n = proximoNumero();
+  if (n === null) { alert("Todos os numeros desta tela ja foram colocados."); return; }
+  posicoes.push({ n: n, x: Math.round(xPct * 100) / 100, y: Math.round(yPct * 100) / 100 });
+  gravarPos(ARQUIVOS[indice].nome);
+  render();
+}
+
+function removerNumero(n) {
+  posicoes = posicoes.filter(function (p) { return p.n !== n; });
+  gravarPos(ARQUIVOS[indice].nome);
+  render();
+}
+
+function desfazer() {
+  if (posicoes.length === 0) return;
+  var maior = Math.max.apply(null, posicoes.map(function (p) { return p.n; }));
+  removerNumero(maior);
+}
+
+function limparTela() {
+  if (posicoes.length === 0) return;
+  if (!confirm("Apagar todos os numeros desta tela?")) return;
+  posicoes = [];
+  gravarPos(ARQUIVOS[indice].nome);
+  render();
+}
+
+// ---------------- clique para adicionar ----------------
+moldura.addEventListener("mousedown", function (e) {
+  if (e.target.classList && e.target.classList.contains("num")) return;
+  if (e.target === img || e.target === moldura) {
+    var r = moldura.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width * 100;
+    var y = (e.clientY - r.top) / r.height * 100;
+    if (x < 0 || x > 100 || y < 0 || y > 100) return;
+    adicionarNumero(x, y);
+  }
+});
+
+// ---------------- arrastar / selecionar ----------------
+document.addEventListener("mousedown", function (e) {
+  var el = e.target;
+  if (!el.classList || !el.classList.contains("num")) return;
+  e.preventDefault();
+  var n = parseInt(el.dataset.n, 10);
+  selecionado = n;
+  moldura.querySelectorAll(".num").forEach(function (d) { d.classList.remove("sel"); });
+  el.classList.add("sel");
+  arrastando = { el: el, n: n, dx: e.clientX, dy: e.clientY };
+});
+
+document.addEventListener("mousemove", function (e) {
+  if (!arrastando) return;
+  var r = moldura.getBoundingClientRect();
+  var xPct = (e.clientX - r.left) / r.width * 100;
+  var yPct = (e.clientY - r.top) / r.height * 100;
+  xPct = Math.max(0, Math.min(100, xPct));
+  yPct = Math.max(0, Math.min(100, yPct));
+  arrastando.el.style.left = xPct + "%";
+  arrastando.el.style.top = yPct + "%";
+  var p = posicoes.find(function (p) { return p.n === arrastando.n; });
+  if (p) { p.x = Math.round(xPct * 100) / 100; p.y = Math.round(yPct * 100) / 100; }
+});
+
+document.addEventListener("mouseup", function () {
+  if (arrastando) { gravarPos(ARQUIVOS[indice].nome); render(); arrastando = null; }
+});
+
+document.addEventListener("keydown", function (e) {
+  if (selecionado !== null && (e.key === "Delete" || e.key === "Backspace")) {
+    removerNumero(selecionado);
+  }
+});
+
+// ---------------- salvar PNG ----------------
+function desenharCanvas(arquivo, pos, cb) {
+  var imgNat = new Image();
+  imgNat.onload = function () {
+    var W = imgNat.naturalWidth, H = imgNat.naturalHeight;
+    var canvas = document.createElement("canvas");
+    canvas.width = W; canvas.height = H;
+    var g = canvas.getContext("2d");
+    g.drawImage(imgNat, 0, 0);
+    var raio = W * 0.017;
+    var fonte = Math.round(raio * 0.72);
+    pos.forEach(function (p) {
+      var x = p.x / 100 * W, y = p.y / 100 * H;
+      // halo
+      g.beginPath();
+      g.arc(x, y, raio + raio * 0.35, 0, Math.PI * 2);
+      g.fillStyle = "rgba(255,255,255,0.55)";
+      g.fill();
+      // circulo
+      g.beginPath();
+      g.arc(x, y, raio, 0, Math.PI * 2);
+      g.fillStyle = corDoNumero(p.n);
+      g.fill();
+      g.lineWidth = Math.max(2, W * 0.0016);
+      g.strokeStyle = "#ffffff";
+      g.stroke();
+      // numero
+      g.fillStyle = "#ffffff";
+      g.font = "bold " + fonte + "px Arial";
+      g.textAlign = "center";
+      g.textBaseline = "middle";
+      g.fillText(String(p.n), x, y + 1);
+    });
+    cb(canvas.toDataURL("image/png"));
+  };
+  imgNat.onerror = function () { alert("Erro ao carregar " + arquivo.nome); };
+  imgNat.src = arquivo.nome;
+}
+
+function desenharBlob(arquivo, pos, cb) {
+  desenharCanvas(arquivo, pos, function (url) {
+    var a = new Image();
+    a.onload = function () {
+      var c = document.createElement("canvas");
+      c.width = a.naturalWidth; c.height = a.naturalHeight;
+      c.getContext("2d").drawImage(a, 0, 0);
+      c.toBlob(cb, "image/png");
+    };
+    a.src = url;
+  });
+}
+
+// ---------------- exportar posicoes (.json) ----------------
+document.getElementById("btnExp").addEventListener("click", function () {
+  var telas = ARQUIVOS.map(function (a) {
+    return { nome: a.nome, itens: a.itens, posicoes: lerPos(a.nome) };
+  }).filter(function (t) { return t.posicoes.length > 0; });
+  if (telas.length === 0) { alert("Nenhuma tela tem numeros neste navegador."); return; }
+  var blob = new Blob([JSON.stringify({ gerado: new Date().toISOString(), telas: telas }, null, 1)], { type: "application/json" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "posicoes-petalliance.json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+});
+
+// ---------------- salvar TODAS em 1 ZIP ----------------
+function salvarZip() {
+  if (typeof JSZip === "undefined") { alert("jszip.min.js nao carregou. Verifique se o arquivo esta na mesma pasta ou se ha internet."); return; }
+  var comNumeros = ARQUIVOS.filter(function (a) { return lerPos(a.nome).length > 0; });
+  if (comNumeros.length === 0) { alert("Nenhuma tela tem numeros ainda."); return; }
+  btnZip.disabled = true;
+  btnSalvarTodas.disabled = true;
+  var zip = new JSZip();
+  var i = 0;
+  function proxima() {
+    if (i >= comNumeros.length) { finalizar(); return; }
+    var a = comNumeros[i++];
+    desenharBlob(a, lerPos(a.nome), function (blob) {
+      zip.file(a.nome, blob);
+      statusEl.textContent = "Zipando " + i + "/" + comNumeros.length + "...";
+      setTimeout(proxima, 60);
+    });
+  }
+  function finalizar() {
+    statusEl.textContent = "Gerando ZIP...";
+    zip.generateAsync({ type: "blob" }).then(function (blob) {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "prints-numerados.zip";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+      statusEl.textContent = "ZIP baixado com " + comNumeros.length + " telas!";
+      btnZip.disabled = false;
+      btnSalvarTodas.disabled = false;
+    });
+  }
+  proxima();
+}
+
+document.getElementById("btnZip").addEventListener("click", salvarZip);
+
+function baixar(dataUrl, nomeArquivo) {
+  var a = document.createElement("a");
+  a.href = dataUrl;
+  a.download = nomeArquivo;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+document.getElementById("btnSalvar").addEventListener("click", function () {
+  var arquivo = ARQUIVOS[indice];
+  if (posicoes.length === 0) { alert("Esta tela ainda nao tem numeros."); return; }
+  aviso.style.display = "none";
+  desenharCanvas(arquivo, posicoes, function (url) {
+    baixar(url, arquivo.nome);
+    aviso.style.display = "none";
+  });
+});
+
+document.getElementById("btnSalvarTodas").addEventListener("click", function () {
+  salvarZip();
+});
+
+// ---------------- navegacao ----------------
+function irPara(n) {
+  if (n < 0 || n >= ARQUIVOS.length) return;
+  indice = n;
+  render();
+}
+
+ARQUIVOS.forEach(function (a) {
+  var op = document.createElement("option");
+  op.value = a.nome;
+  op.textContent = a.nome;
+  selArquivo.appendChild(op);
+});
+selArquivo.addEventListener("change", function () {
+  var n = ARQUIVOS.findIndex(function (a) { return a.nome === selArquivo.value; });
+  if (n >= 0) irPara(n);
+});
+document.getElementById("btnAnt").addEventListener("click", function () { irPara(indice - 1); });
+document.getElementById("btnProx").addEventListener("click", function () { irPara(indice + 1); });
+document.getElementById("btnLimpar").addEventListener("click", limparTela);
+document.getElementById("btnDesfazer").addEventListener("click", desfazer);
+
+window.addEventListener("resize", aplicarTamanhos);
+
+render();
+</script>
+</body>
+</html>

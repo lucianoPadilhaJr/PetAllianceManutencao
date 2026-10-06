@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Denunciar - PetAlliance</title>
+  <link rel="stylesheet" href="/frontEnd/style/style.css">
+</head>
+<body class="card-centered">
+
+<div class="card-wide">
+  <div class="card">
+    <a href="javascript:history.back()" class="btn-back">&larr;</a>
+    <h1 class="form-title">Fazer Den&uacute;ncia</h1>
+
+    <?php if (!empty($erro)): ?>
+      <div class="form-msg form-msg-error"><?= htmlspecialchars($erro) ?></div>
+    <?php elseif (!empty($sucesso)): ?>
+      <div class="form-msg form-msg-success">Den&uacute;ncia enviada com sucesso!</div>
+      <a href="/backEnd/home.php" class="btn btn-primary" style="display:block;width:100%;">Voltar ao in&iacute;cio</a>
+    <?php endif; ?>
+
+    <?php if (empty($sucesso)): ?>
+      <form method="POST">
+        <input type="hidden" name="tipo_alvo" value="<?= htmlspecialchars($_GET['tipo'] ?? 'site') ?>">
+        <input type="hidden" name="alvo_id" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
+
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">
+          Denunciando: <strong><?= htmlspecialchars(ucfirst($_GET['tipo'] ?? 'site') . ($_GET['id'] ?? '' ? ' #' . $_GET['id'] : '')) ?></strong>
+        </p>
+
+        <label class="form-label" for="descricao">Descreva o motivo da den&uacute;ncia:</label>
+        <textarea class="form-input" style="max-width: 400px; min-width: 400px;" name="descricao" id="descricao" rows="5" placeholder="Descreva o motivo da den&uacute;ncia..." required></textarea>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;">Enviar den&uacute;ncia</button>
+      </form>
+    <?php endif; ?>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Foto de Perfil</title>
+</head>
+<body>
+
+    <div class="container-foto">
+        <h2>Minha Foto</h2>
+
+        <!-- A foto antiga é carregada via PHP através da sessão -->
+        <img src="/uploads/usuario/<?= htmlspecialchars($_SESSION['usuario_imagem'] ?? 'placeholder.webp') ?>" 
+             id="preview-foto" 
+             class="perfil-preview" 
+             alt="Foto de Perfil" 
+             style="width: 20rem;">
+
+        <form action="editarFotoUsuario.php" method="POST" enctype="multipart/form-data" class="upload-group">
+            <input type="file" name="imagemPerfil" id="input-foto" accept="image/*" required>
+            <button type="submit" name="editarFoto" class="btn-atualizar">Salvar Nova Foto</button>
+        </form>
+    </div>
+
+    <script>
+        const inputFoto = document.getElementById('input-foto');
+        const previewFoto = document.getElementById('preview-foto');
+
+        inputFoto.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewFoto.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
+</body>
+</html>

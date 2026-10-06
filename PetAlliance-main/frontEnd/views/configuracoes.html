@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetAlliance</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f5f5f5;
+            margin:0;
+        }
+
+        .container{
+            width:90%;
+            max-width:600px;
+            margin:40px auto;
+        }
+
+        h1{
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        .card{
+            background:#fff;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,.15);
+            overflow:hidden;
+        }
+
+        .opcao{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:18px 20px;
+            text-decoration:none;
+            color:#333;
+            border-bottom:1px solid #ddd;
+            transition:.2s;
+        }
+
+        .opcao:last-child{
+            border-bottom:none;
+        }
+
+        .opcao:hover{
+            background:#f2f2f2;
+        }
+
+        .seta{
+            color:#888;
+            font-size:18px;
+        }
+    </style>
+
+<div class="container">
+
+    <h1>Configurações</h1>
+
+    <div class="card">
+
+        <a href="editarPerfil.php" class="opcao">
+            <span>Editar Perfil</span>
+            <span class="seta">></span>
+        </a>
+
+        <a href="alterarEmail.php" class="opcao">
+            <span>Alterar Email</span>
+            <span class="seta">></span>
+        </a>
+
+        <a href="alterarSenha.php" class="opcao">
+            <span>Alterar Senha</span>
+            <span class="seta">></span>
+        </a>
+
+        <a href="/../backEnd/denuncias/cadastrarDenuncia.php?tipo=site" class="opcao">
+            <span>Relatar Problema</span>
+            <span class="seta">></span>
+        </a>
+
+        <a href="/backEnd/pagamentos.php" class="opcao">
+            <span>Pagamentos</span>
+            <span class="seta">></span>
+        </a>
+        
+        <a href="sobre.php" class="opcao">
+            <span>Sobre</span>
+            <span class="seta">></span>
+        </a>
+
+        <a href="/../../backEnd/logout.php" class="opcao">
+            <span>Sair da Conta</span>
+            <span class="seta">></span>
+        </a>
+
+    </div>
+
+</div>
+
+</body>

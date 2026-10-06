@@ -1,0 +1,14 @@
+{
+    "name": "petalliance/petalliance",
+    "description": "PetAlliance",
+    "type": "project",
+    "authors": [
+        {
+            "name": "CarlosDuhring",
+            "email": "carlos_duhring@estudante.sesisenai.org.br"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^7.1"
+    }
+}

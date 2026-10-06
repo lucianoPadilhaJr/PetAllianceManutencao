@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="/frontEnd/style/style.css">
+<link rel="stylesheet" href="/frontEnd/style/estilos.css">
+<div class="page-container" style="max-width:480px">
+  <div class="page-hero">
+    <h1 class="page-hero-title">Digite o código</h1>
+    <p class="page-hero-sub">Enviamos um código de verificação para seu email.</p>
+  </div>
+
+  <div id="mensagem-erro" class="form-msg form-msg-error" style="display:none;"></div>
+  <div id="mensagem-sucesso" class="form-msg form-msg-success" style="display:none;"></div>
+
+  <div class="page-card page-card-border">
+    <form id="form-codigo">
+      <label for="codigo" class="form-label">Código de verificação</label>
+      <input type="text" class="form-input" name="codigo" id="codigo" maxlength="6" placeholder="000000" required>
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:0.75rem;">Verificar</button>
+    </form>
+
+    <div style="text-align:center;margin-top:1rem;">
+      <p style="margin-bottom:0.25rem;font-size:0.85rem;">Não recebeu o código?</p>
+      <button id="btn-reenviar" class="btn-ghost">Reenviar código</button>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:1rem">
+    <a href="/backEnd/usuario/esqueceuSenha.php" class="page-link">Voltar</a>
+  </div>
+</div>
+
+<script src="../../frontEnd/utils/inserirCodigo.js"></script>

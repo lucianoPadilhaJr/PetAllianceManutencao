@@ -1,0 +1,226 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="petalliance-classes-v3" name="Diagrama de Classes">
+    <mxGraphModel dx="593" dy="321" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2290" pageHeight="1354" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=18;fontStyle=1;align=center;fontColor=#1a1a2e;" value="PetAlliance - Diagrama de Classes (backEnd models + DAOs)   |   solido = FK (persistencia)   tracejado = uso / infra" vertex="1">
+          <mxGeometry height="38" width="2250" x="20" y="8" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Model: Usuario&lt;br/&gt;(implements JsonSerializable)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- id : int (BIGINT)&lt;br/&gt;- cpf : CHAR(11) UNIQUE&lt;br/&gt;- cep : String(8)&lt;br/&gt;- nome : String(100)&lt;br/&gt;- email : String(100)&lt;br/&gt;- senha : String(255)&lt;br/&gt;- tipo : int (tipo_usuario)&lt;br/&gt;- imagem : String (foto_perfil)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ __construct()&lt;br/&gt;+ jsonSerialize()&lt;br/&gt;+ getters / setters&lt;/div&gt;" vertex="1">
+          <mxGeometry height="226" width="260" x="40" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="UsuarioDAO" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;DAO: UsuarioDAO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- pdo : PDO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ read($cpf)&lt;br/&gt;+ readPorId($id)&lt;br/&gt;+ cadastrarUsuario(Usuario)&lt;br/&gt;+ updateFoto(Usuario)&lt;br/&gt;+ updateUsuario(Usuario)&lt;br/&gt;+ updateSenha($id, $senha)&lt;br/&gt;+ marcarVerificado($id)&lt;br/&gt;+ salvarEmailPendente(...)&lt;br/&gt;+ confirmarEmailPendente($token)&lt;br/&gt;+ buscarPorEmail($email)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="210" width="260" x="40" y="408" as="geometry" />
+        </mxCell>
+        <mxCell id="Notificacao" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Model: Notificacao&lt;br/&gt;(implements Json)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- id : int&lt;br/&gt;- usuario_id : int (FK)&lt;br/&gt;- tipo : String(50)&lt;br/&gt;- mensagem : Text&lt;br/&gt;- lida : tinyint(1)&lt;br/&gt;- link : String(255)&lt;br/&gt;- criado_em : TIMESTAMP&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ __construct()&lt;br/&gt;+ jsonSerialize()&lt;br/&gt;+ getters&lt;/div&gt;" vertex="1">
+          <mxGeometry height="212" width="260" x="40" y="682" as="geometry" />
+        </mxCell>
+        <mxCell id="NotificacaoDAO" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;DAO: NotificacaoDAO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- pdo : PDO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ criar(Notificacao)&lt;br/&gt;+ listarPorUsuario($usuarioId)&lt;br/&gt;+ marcarLida($id)&lt;br/&gt;+ naoLidas($usuarioId)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="126" width="260" x="40" y="958" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_bloqueios" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=0;verticalAlign=top;fontSize=10;dashed=1;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Tabela: tb_bloqueios&lt;br/&gt;(no banco, sem uso no codigo)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;usuario_id (quem bloqueia)&lt;br/&gt;bloqueado_id&lt;br/&gt;FK -&amp;gt; tb_usuarios (2x)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="112" width="260" x="40" y="1148" as="geometry" />
+        </mxCell>
+        <mxCell id="Animal" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Model: Animal&lt;br/&gt;(implements Json)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- id : int&lt;br/&gt;- dono_id : int (FK tb_usuarios)&lt;br/&gt;- nome : String(50)&lt;br/&gt;- raca : String(50)&lt;br/&gt;- cor : String(30)&lt;br/&gt;- sexo/tipo/porte : String&lt;br/&gt;- data_nascimento : Date&lt;br/&gt;- peso : Decimal(5,2)&lt;br/&gt;- vacinado : bool&lt;br/&gt;- foto_vacinas : String(250)&lt;br/&gt;- foto_certificado : String(250)&lt;br/&gt;- venda_preco : Decimal(10,2)&lt;br/&gt;- favoritado : bool + fotos[]&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ __construct()&lt;br/&gt;+ jsonSerialize()&lt;br/&gt;+ getters / setters&lt;/div&gt;" vertex="1">
+          <mxGeometry height="296" width="260" x="420" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="AnimalDAO" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;DAO: AnimalDAO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- pdo : PDO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ carregarFotos($petId)&lt;br/&gt;+ cadastrarAnimal(Animal)&lt;br/&gt;+ read($id, $usuarioId)&lt;br/&gt;+ search(termo, filtros, pg)&lt;br/&gt;+ readAll($usuarioId, $pagina)&lt;br/&gt;+ readByDonoId($donoId)&lt;br/&gt;+ favoritarAnimal($uid, $petId)&lt;br/&gt;+ listarFavoritos($id)&lt;br/&gt;+ adicionarFoto / removerFoto&lt;br/&gt;+ atualizarAnimal(Animal)&lt;br/&gt;+ delete($id)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="224" width="260" x="420" y="478" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_favoritos" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=0;verticalAlign=top;fontSize=10;dashed=1;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Tabela: tb_favoritos&lt;br/&gt;(SQL no AnimalDAO)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;id_pet (FK tb_pets)&lt;br/&gt;id_usuario (FK tb_usuarios)&lt;br/&gt;PK composta (id_usuario, id_pet)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="104" width="260" x="420" y="766" as="geometry" />
+        </mxCell>
+        <mxCell id="Denuncia" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Model: Denuncia&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- id : int&lt;br/&gt;- usuario_id : int (FK tb_usuarios)&lt;br/&gt;- alvo : animal|usuario|site&lt;br/&gt;- alvo_id : int NULL&lt;br/&gt;- descricao : Text&lt;br/&gt;- resolvido : tinyint(1)&lt;br/&gt;- criado_em : TIMESTAMP&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ __construct()&lt;br/&gt;+ getters / setters&lt;/div&gt;" vertex="1">
+          <mxGeometry height="182" width="260" x="420" y="922" as="geometry" />
+        </mxCell>
+        <mxCell id="DenunciaDAO" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;DAO: DenunciaDAO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- pdo : PDO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ cadastrar(Denuncia)&lt;br/&gt;+ listar()&lt;br/&gt;+ atualizarStatus($id, $status)&lt;br/&gt;+ estatisticas()&lt;/div&gt;" vertex="1">
+          <mxGeometry height="142" width="260" x="420" y="1168" as="geometry" />
+        </mxCell>
+        <mxCell id="SolicitacaoMatch" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Model: SolicitacaoMatch&lt;br/&gt;(implements Json)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- id : int&lt;br/&gt;- pet_id : int (FK tb_pets)&lt;br/&gt;- remetente_id : int (FK)&lt;br/&gt;- status : pendente/aceito/recusado&lt;br/&gt;- criado_em : TIMESTAMP&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ __construct()&lt;br/&gt;+ jsonSerialize()&lt;br/&gt;+ setStatus() valida enum&lt;br/&gt;+ getters&lt;/div&gt;" vertex="1">
+          <mxGeometry height="198" width="260" x="820" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="SolicitacaoMatchDAO" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;DAO: SolicitacaoMatchDAO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- pdo : PDO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ criar(SolicitacaoMatch)&lt;br/&gt;+ listarPorDono($donoId)&lt;br/&gt;+ listarPorRemetente($id)&lt;br/&gt;+ atualizarStatus($id, $status)&lt;br/&gt;+ buscar($id)&lt;br/&gt;+ verificarExistente($petId, $rid)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="154" width="260" x="820" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_matches" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=0;verticalAlign=top;fontSize=10;dashed=1;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Tabela: tb_matches&lt;br/&gt;(no banco, sem fluxo no codigo)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;id&lt;br/&gt;id_usuario1 / id_animal1 (propositor)&lt;br/&gt;id_usuario2 / id_animal2 (alvo do match)&lt;br/&gt;aceito : bool (match formado)&lt;br/&gt;criado_em / respondido_em&lt;/div&gt;" vertex="1">
+          <mxGeometry height="162" width="260" x="820" y="598" as="geometry" />
+        </mxCell>
+        <mxCell id="Conversa" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Conversa (via ConversaDAO)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- id : int&lt;br/&gt;- solicitacao_id : int (FK)&lt;br/&gt;- ativa : bool&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;(persistida via ConversaDAO)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="112" width="260" x="1180" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="ConversaDAO" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;DAO: ConversaDAO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- pdo : PDO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ criar($solicitacaoId)&lt;br/&gt;+ buscar($id)&lt;br/&gt;+ buscarPorSolicitacao($id)&lt;br/&gt;+ listarPorUsuario($usuarioId)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="126" width="260" x="1180" y="294" as="geometry" />
+        </mxCell>
+        <mxCell id="EmailService" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Service: EmailService&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- transport : SMTP&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ enviarVerificacao($email, $nome, $token)&lt;br/&gt;+ enviarRecuperacao($email, $nome, $token)&lt;br/&gt;+ enviarAlteracaoEmail($email, $nome)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="112" width="260" x="1180" y="484" as="geometry" />
+        </mxCell>
+        <mxCell id="Mensagem" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Model: Mensagem&lt;br/&gt;(implements Json)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- id : int&lt;br/&gt;- conversa_id : int (FK)&lt;br/&gt;- remetente_id : int (FK)&lt;br/&gt;- conteudo : String(500)&lt;br/&gt;- lida : tinyint(1)&lt;br/&gt;- data_envio : TIMESTAMP&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ __construct()&lt;br/&gt;+ jsonSerialize()&lt;br/&gt;+ getters / setters&lt;/div&gt;" vertex="1">
+          <mxGeometry height="198" width="260" x="1560" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="MensagemDAO" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;DAO: MensagemDAO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- pdo : PDO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ enviar(Mensagem)&lt;br/&gt;+ listarPorConversa($cid, $limite)&lt;br/&gt;+ novasDesde($cid, $ultimoId)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="112" width="260" x="1560" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="VerificacaoDAO" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;DAO: VerificacaoDAO&lt;br/&gt;(tb_verificacao_email)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- pdo : PDO&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ salvar($uid, $token, $codigo, $tipo)&lt;br/&gt;+ buscarPorToken($token, $tipo)&lt;br/&gt;+ buscarPorUsuario($uid, $tipo)&lt;br/&gt;+ buscarUltimoPorUsuario(...)&lt;br/&gt;- marcarUsado($id)&lt;br/&gt;- limparPorUsuario($uid, $tipo)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="170" width="260" x="1560" y="556" as="geometry" />
+        </mxCell>
+        <mxCell id="Conexao" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Infra: Conexao (PDO)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;static getConexao() : PDO&lt;br/&gt;(PDO singleton, MySQL)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="260" x="1560" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="PagamentoAbacatePay" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=0;verticalAlign=top;fontSize=10;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Service: PagamentoAbacatePay&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;- pdo : PDO&lt;br/&gt;- apiKey : (env ABACATEPAY_API_KEY)&lt;br/&gt;- apiUrl : sandbox&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;+ criarCheckout(petId, prodId, preco, uid)&lt;br/&gt;+ verificarStatusPagamento($produtoId)&lt;br/&gt;+ atualizarStatusPagamento($coId, $st)&lt;br/&gt;+ webhookNotificacao()&lt;br/&gt;+ getPagamentosUsuario($usuarioId)&lt;br/&gt;+ consultarStatusApiAbacatePay($coId)&lt;br/&gt;+ verificarEAtualizarPendente(...)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="196" width="260" x="1940" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_pagamentos" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=0;verticalAlign=top;fontSize=10;dashed=1;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Tabela: tb_pagamentos&lt;br/&gt;(SQL direto no Pagamento)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;id&lt;br/&gt;usuario_id&lt;br/&gt;prod_id_abacatepay&lt;br/&gt;status : PENDING/PAID/REFUNDED&lt;br/&gt;valor : DECIMAL(10,2)&lt;br/&gt;plano_nome / plano_expiracao&lt;/div&gt;" vertex="1">
+          <mxGeometry height="134" width="260" x="1940" y="378" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_vendas" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=0;verticalAlign=top;fontSize=10;dashed=1;" value="&lt;div style=&quot;text-align:center;font-weight:bold;font-size:11;padding-top:5px;padding-bottom:5px;&quot;&gt;Tabela: tb_vendas&lt;br/&gt;(no banco, sem fluxo no codigo)&lt;/div&gt;&lt;hr size=&quot;0.5&quot;/&gt;&lt;div style=&quot;text-align:left;font-size:10;padding-left:6px;padding-right:6px;padding-top:3px;padding-bottom:3px;line-height:1.35;&quot;&gt;animal_id&lt;br/&gt;comprador_id&lt;br/&gt;vendedor_id&lt;br/&gt;preco : DECIMAL(10,2)&lt;br/&gt;status : PENDING/PAID/...&lt;br/&gt;pagamento_id (FK)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="134" width="260" x="1940" y="576" as="geometry" />
+        </mxCell>
+        <mxCell id="e_Usuario_Animal" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#555555;exitX=1;exitY=0.25;entryX=0.000;entryY=0.420;endArrow=block;endFill=1;exitDx=0;exitDy=0;" value="1..* dono_id">
+          <mxGeometry relative="1" x="0.0374" y="10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="300" y="150" />
+              <mxPoint x="390" y="150" />
+              <mxPoint x="390" y="222.33" />
+            </Array>
+            <mxPoint x="300" y="154.4999999999999" as="sourcePoint" />
+            <mxPoint x="420" y="222.31999999999994" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_Animal_SolicitacaoMatch" edge="1" parent="1" source="Animal" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#555555;exitX=1.000;exitY=0.420;entryX=0.000;entryY=0.420;endArrow=block;endFill=1;" target="SolicitacaoMatch" value="1..* pet_id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_SolicitacaoMatch_Conversa" edge="1" parent="1" source="SolicitacaoMatch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#555555;exitX=1.000;exitY=0.420;entryX=0.000;entryY=0.420;endArrow=block;endFill=1;" target="Conversa" value="1 solicitacao">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_Conversa_Mensagem" edge="1" parent="1" source="Conversa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#555555;exitX=1.000;exitY=0.420;entryX=0.000;entryY=0.420;endArrow=block;endFill=1;" target="Mensagem" value="1..* conversa">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_UsuarioDAO_Usuario" edge="1" parent="1" source="UsuarioDAO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=0.500;exitY=0.000;entryX=0.500;entryY=1.000;endArrow=block;endFill=1;" target="Usuario" value="usa">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_NotificacaoDAO_Notificacao" edge="1" parent="1" source="NotificacaoDAO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=0.500;exitY=0.000;entryX=0.500;entryY=1.000;endArrow=block;endFill=1;" target="Notificacao" value="usa">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_AnimalDAO_Animal" edge="1" parent="1" source="AnimalDAO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=0.500;exitY=0.000;entryX=0.500;entryY=1.000;endArrow=block;endFill=1;" target="Animal" value="usa">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_DenunciaDAO_Denuncia" edge="1" parent="1" source="DenunciaDAO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=0.500;exitY=0.000;entryX=0.500;entryY=1.000;endArrow=block;endFill=1;" target="Denuncia" value="usa">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_SolicitacaoMatchDAO_SolicitacaoMatch" edge="1" parent="1" source="SolicitacaoMatchDAO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=0.500;exitY=0.000;entryX=0.500;entryY=1.000;endArrow=block;endFill=1;" target="SolicitacaoMatch" value="usa">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_ConversaDAO_Conversa" edge="1" parent="1" source="ConversaDAO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=0.500;exitY=0.000;entryX=0.500;entryY=1.000;endArrow=block;endFill=1;" target="Conversa" value="usa">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_MensagemDAO_Mensagem" edge="1" parent="1" source="MensagemDAO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=0.500;exitY=0.000;entryX=0.500;entryY=1.000;endArrow=block;endFill=1;" target="Mensagem" value="usa">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_AnimalDAO_tb_favoritos" edge="1" parent="1" source="AnimalDAO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;endArrow=block;endFill=1;" target="tb_favoritos" value="SQL direto">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_SolicitacaoMatchDAO_tb_matches" edge="1" parent="1" source="SolicitacaoMatchDAO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;endArrow=block;endFill=1;" target="tb_matches" value="aceito registra">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_PagamentoAbacatePay_tb_pagamentos" edge="1" parent="1" source="PagamentoAbacatePay" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;endArrow=block;endFill=1;" target="tb_pagamentos" value="cria/atualiza">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_tb_pagamentos_tb_vendas" edge="1" parent="1" source="tb_pagamentos" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;endArrow=block;endFill=1;" target="tb_vendas">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_Usuario_SolicitacaoMatch" edge="1" parent="1" source="Usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#555555;exitX=0.500;exitY=0.000;entryX=0.500;entryY=0.000;endArrow=block;endFill=1;" target="SolicitacaoMatch" value="1..* remetente">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="170" y="52" />
+              <mxPoint x="950" y="52" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_Usuario_Mensagem" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#555555;exitX=0.500;exitY=0.000;entryX=0.500;entryY=0.000;endArrow=block;endFill=1;" value="1..* remetente_msg">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="220" y="70" />
+              <mxPoint x="1740" y="70" />
+            </Array>
+            <mxPoint x="220" y="118" as="sourcePoint" />
+            <mxPoint x="1740" y="118" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_Usuario_Notificacao" edge="1" parent="1" source="Usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#555555;exitX=1.000;exitY=0.400;entryX=1.000;entryY=0.500;endArrow=block;endFill=1;" target="Notificacao" value="1..* recebe">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="45" as="offset" />
+            <Array as="points">
+              <mxPoint x="330" y="208.4" />
+              <mxPoint x="330" y="788" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_Usuario_Denuncia" edge="1" parent="1" source="Usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#555555;exitX=1.000;exitY=0.550;entryX=0.000;entryY=0.500;endArrow=block;endFill=1;" target="Denuncia" value="1..* denuncia">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-30" as="offset" />
+            <Array as="points">
+              <mxPoint x="390" y="242.3" />
+              <mxPoint x="390" y="1013" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_Animal_Denuncia" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=1.000;exitY=0.350;entryX=1.000;entryY=0.500;endArrow=block;endFill=1;" value="alvo animal">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="294" />
+              <mxPoint x="760" y="1085.4" />
+            </Array>
+            <mxPoint x="680" y="293.9999999999999" as="sourcePoint" />
+            <mxPoint x="680" y="1085.3999999999999" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_Usuario_tb_bloqueios" edge="1" parent="1" source="Usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=1.000;exitY=0.620;entryX=1.000;entryY=0.500;endArrow=block;endFill=1;" target="tb_bloqueios" value="bloqueia">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="258.1" />
+              <mxPoint x="350" y="1194" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_VerificacaoDAO_EmailService" edge="1" parent="1" source="VerificacaoDAO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;labelBackgroundColor=#FFFFFF;strokeColor=#888888;dashed=1;exitX=0.000;exitY=0.550;entryX=1.000;entryY=0.500;endArrow=block;endFill=1;" target="EmailService" value="envia token">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1500" y="649.5" />
+              <mxPoint x="1500" y="540" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

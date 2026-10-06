@@ -1,0 +1,17 @@
+<main>
+  <div id="pagamento-modal" class="modal" style="display:none;"></div>
+
+  <div class="fav-header">
+    <h1 class="form-title" style="margin-bottom:0;">Meus Pagamentos</h1>
+    <p class="fav-subtitle">Hist&oacute;rico de transa&ccedil;&otilde;es</p>
+  </div>
+
+  <section id="historico-pagamentos" style="max-width:800px;margin:1.5rem auto 0;padding:0 1rem;">
+    <p style="color:var(--text-muted);font-size:0.85rem;">Carregando hist&oacute;rico...</p>
+  </section>
+
+  <script src="/frontEnd/utils/pagamento.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', carregarHistoricoPagamentos);
+  </script>
+</main>

@@ -1,0 +1,102 @@
+============================================================
+       DOCUMENTO DE ESPECIFICAÇÃO DE REQUISITOS (SRS)
+============================================================
+
+1. REQUISITOS FUNCIONAIS (RF)
+------------------------------------------------------------
+
+[RF01] AUTENTICAÇÃO DE USUÁRIO
+O sistema deve permitir que o usuário realize login na plataforma.
+- Entradas: Email/Username, CPF, Senha.
+- RF01.1: Validar CPF válido.
+- RF01.2: Validar se o email existe.
+- RF01.3: Senha com no mínimo 8 caracteres.
+- RF01.4: Recuperação de senha por email.
+
+[RF02] CADASTRO DE USUÁRIO
+O sistema deve permitir o cadastro de novos usuários.
+- Entradas: Nome, Username, Email, CPF, Senha, Confirmação.
+- RF02.1: CPF único (não duplicado).
+- RF02.2: Email único.
+- RF02.3: Senha deve conter: Maiúscula, Minúscula e Número.
+- RF02.5: Envio de email de confirmação.
+
+[RF03] CADASTRO DE PET
+Permitir o registro de animais no sistema.
+- Dados: Foto, Nome, Raça, Cor, Sexo, Tipo, Porte, Idade, Peso, Descrição.
+- RF03.1: Limite de até 10 fotos.
+- RF03.2: Foto é item obrigatório.
+- RF03.3: Carteira de vacinação obrigatória.
+- RF03.4: Certificado de raça (opcional).
+- RF03.5: Edição permitida apenas pelo dono.
+
+[RF04] LISTAGEM DE PETS
+Visualização dos animais cadastrados na plataforma.
+- Filtros: Tipo, Raça, Sexo, Localização.
+- Busca: Por nome do pet.
+
+[RF05] MATCH DE ANIMAIS
+Sistema de aproximação entre animais/donos.
+- RF05.1: Necessário ter ao menos um pet cadastrado.
+- RF05.2: Match libera a funcionalidade de chat.
+- RF05.3: Opção de desfazer match.
+- RF05.4: Opção de bloquear outros usuários.
+
+[RF06] CHAT
+Comunicação direta entre os proprietários.
+- RF06.1: Apenas após o match.
+- RF06.2: Mensagens com registro de data e hora.
+- RF06.3: Opção de excluir conversa.
+
+[RF07] VENDA DE FILHOTES
+Funcionalidade de anúncio para comercialização.
+- RF07.1: Vendedor deve ser o dono do pet.
+- RF07.2 / RF07.3: Permite edição e exclusão do anúncio.
+
+[RF08] PAGAMENTOS
+Integração financeira via aplicativo de pagamentos.
+- RF08.1: Aplicação automática de taxas do sistema.
+- RF08.2: Registro obrigatório da transação.
+- RF08.3: Histórico visível ao usuário.
+- RF08.4: Integração via API de pagamento.
+- RF08.5: Opção de cancelamento.
+
+[RF09] PERFIL
+Gerenciamento de dados da conta pelo usuário.
+
+[RF10] ADMINISTRAÇÃO
+Painel de controle para moderadores do sistema.
+- Funções: Remover usuários/pets/anúncios, visualizar denúncias e transações.
+
+[RF11] CONFIGURAÇÕES E PRIVACIDADE
+Ajustes finos da conta e preferências.
+- RF11.1: Exige login ativo.
+- RF11.2: Alteração de senha exige a senha atual.
+- RF11.5: Fotos em JPG/PNG (Máx 5MB).
+- RF11.7: Configuração de Perfil Público/Privado.
+- RF11.9: Exclusão de conta remove todos os dados vinculados.
+
+
+2. REQUISITOS NÃO FUNCIONAIS (RNF)
+------------------------------------------------------------
+
+[RNF01] SEGURANÇA
+- Criptografia de senhas e tokens de sessão seguros.
+
+[RNF02] DESEMPENHO
+- Tempo de resposta < 3 segundos.
+- Suporte a 100+ usuários simultâneos.
+
+[RNF03] USABILIDADE
+- Interface intuitiva e layout responsivo.
+
+[RNF04] COMPATIBILIDADE
+- Suporte a Navegadores, Celulares, Tablets e PCs.
+
+[RNF05] DISPONIBILIDADE
+- Operação 24/7 com backup automático.
+
+[RNF06] BANCO DE DADOS
+- Persistência, integridade e backup diário dos dados.
+
+============================================================
