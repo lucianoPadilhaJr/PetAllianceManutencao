@@ -3,12 +3,15 @@
 require_once __DIR__ . "/../../config/config.php";
 require_once __DIR__ . "/../../models/notificacao.php";
 require_once __DIR__ . "/../../models/notificacaoDAO.php";
+require_once __DIR__ . "/../../models/solicitacaoMatchDAO.php";
 
 class NotificacaoController {
     private $dao;
+    private $solicitacaoDAO;
 
     public function __construct() {
         $this->dao = new NotificacaoDAO();
+        $this->solicitacaoDAO = new SolicitacaoMatchDAO();
     }
 
     public function listar($usuarioId) {
@@ -36,6 +39,25 @@ class NotificacaoController {
                     default:
                         $outras[] = $n;
                         break;
+                }
+            }
+
+            if (empty($matchRecebidas) && $this->solicitacaoDAO) {
+                $solicitacoesPendentes = $this->solicitacaoDAO->listarPorDono($usuarioId);
+                foreach ($solicitacoesPendentes as $solicitacao) {
+                    if (($solicitacao['status'] ?? '') !== 'pendente') {
+                        continue;
+                    }
+
+                    $matchRecebidas[] = [
+                        'id' => 'solicitacao_' . $solicitacao['id'],
+                        'usuario_id' => $usuarioId,
+                        'tipo' => 'solicitacao_match',
+                        'mensagem' => 'Alguém quer um match com seu pet "' . ($solicitacao['pet_nome'] ?? 'pet') . '"',
+                        'link' => '/backEnd/match.php',
+                        'lida' => 0,
+                        'criado_em' => $solicitacao['criado_em'] ?? null
+                    ];
                 }
             }
 
