@@ -162,6 +162,9 @@
                 var msg = ' . $jsonMsg . ';
                 var toast = document.createElement("div");
                 toast.className = "toast-message toast-" + (msg.tipo || "info");
+                toast.setAttribute("role", (msg.tipo === "erro" || msg.tipo === "error") ? "alert" : "status");
+                toast.setAttribute("aria-live", (msg.tipo === "erro" || msg.tipo === "error") ? "assertive" : "polite");
+                toast.setAttribute("aria-atomic", "true");
                 toast.textContent = msg.mensagem || "";
                 document.body.appendChild(toast);
                 setTimeout(function() { toast.remove(); }, 4000);
@@ -198,13 +201,16 @@
                 document.addEventListener("DOMContentLoaded", function() {
                     var toast = document.createElement("div");
                     toast.className = "toast-message toast-sucesso";
+                    toast.setAttribute("role", "status");
+                    toast.setAttribute("aria-live", "polite");
+                    toast.setAttribute("aria-atomic", "true");
                     toast.textContent = "Animal cadastrado com sucesso";
                     document.body.appendChild(toast);
                     setTimeout(function() { toast.remove(); }, 4000);
                 });
             </script>';
         } else {
-             echo "<p id='mensagem-erro' class='erro-escondido'>mensagem de erro</p>";
+             echo "<p id='mensagem-erro' class='erro-escondido' role='alert' aria-live='assertive' aria-atomic='true'>mensagem de erro</p>";
         }
     }
     if (isset($_GET['erro'])) {
@@ -213,6 +219,9 @@
                 document.addEventListener("DOMContentLoaded", function() {
                     var toast = document.createElement("div");
                     toast.className = "toast-message toast-erro";
+                    toast.setAttribute("role", "alert");
+                    toast.setAttribute("aria-live", "assertive");
+                    toast.setAttribute("aria-atomic", "true");
                     toast.textContent = "VocÃª nÃ£o pode entrar aqui";
                     document.body.appendChild(toast);
                     setTimeout(function() { toast.remove(); }, 4000);

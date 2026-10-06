@@ -148,8 +148,8 @@ if ($controller->isVerificado($usuarioId)) {
             <p style="margin-bottom:0.5rem;">Enviamos um código para <strong><?= htmlspecialchars($usuario->getEmail()) ?></strong></p>
             <p style="margin-bottom:1rem;">Digite o código abaixo ou clique no link enviado por email.</p>
 
-            <div id="mensagem-erro" class="form-msg form-msg-error" style="display:none;"></div>
-            <div id="mensagem-sucesso" class="form-msg form-msg-success" style="display:none;"></div>
+            <div id="mensagem-erro" class="form-msg form-msg-error" role="alert" aria-live="assertive" aria-atomic="true" style="display:none;"></div>
+            <div id="mensagem-sucesso" class="form-msg form-msg-success" role="status" aria-live="polite" aria-atomic="true" style="display:none;"></div>
 
             <form id="form-verificacao" method="POST">
                 <input type="hidden" name="usuario_id" value="<?= htmlspecialchars($usuarioId) ?>">

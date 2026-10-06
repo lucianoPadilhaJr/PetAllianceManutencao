@@ -1,7 +1,9 @@
+<main id="conteudo-principal">
 <div id="animais-modal"></div>
 <div id="busca-container" style="padding: 1rem; text-align: center; display: flex; justify-content: center; gap: 0.5rem; align-items: flex-start;">
     <div style="position: relative; flex: 1; max-width: 600px;">
-        <input type="text" id="busca-input" placeholder="Pesquisar por nome, tipo, raça, cor ou descrição..." style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
+        <label for="busca-input" class="sr-only">Buscar animais</label>
+        <input type="text" id="busca-input" name="busca" aria-label="Buscar animais" placeholder="Pesquisar por nome, tipo, raça, cor ou descrição..." style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
     </div>
     <div style="position: relative;">
         <button type="button" id="btn-filtros" style="padding: 0.75rem 1rem; border: 1px solid #ccc; border-radius: 8px; background: #fff; cursor: pointer; font-size: 1rem; white-space: nowrap;">Filtros &#9660;</button>
@@ -43,5 +45,6 @@
 </div>
 <div id="animais-container" class="animal-grid"></div>
 <div id="animais-pagination" class="animal-pagination"></div>
+</main>
 <script src="/frontEnd/utils/usuarioSalvos.js"></script>
 <script src="/frontEnd/utils/app.js"></script>
