@@ -5,14 +5,30 @@ require_once __DIR__ . "/../../models/solicitacaoMatch.php";
 require_once __DIR__ . "/../../models/solicitacaoMatchDAO.php";
 require_once __DIR__ . "/../../models/notificacao.php";
 require_once __DIR__ . "/../../models/notificacaoDAO.php";
+require_once __DIR__ . "/../../models/conversaDAO.php";
 
 class SolicitacaoMatchController {
     private $dao;
     private $notificacaoDAO;
+    private $conversaDAO;
 
     public function __construct() {
         $this->dao = new SolicitacaoMatchDAO();
         $this->notificacaoDAO = new NotificacaoDAO();
+        $this->conversaDAO = new ConversaDAO();
+    }
+
+    public function criarConversaSeNecessaria($solicitacaoId) {
+        if (!$solicitacaoId) {
+            return null;
+        }
+
+        $conversa = $this->conversaDAO->buscarPorSolicitacao($solicitacaoId);
+        if ($conversa) {
+            return (int) $conversa['id'];
+        }
+
+        return (int) $this->conversaDAO->criar($solicitacaoId);
     }
 
     public function enviarSolicitacao() {
@@ -74,6 +90,7 @@ class SolicitacaoMatchController {
             }
 
             $this->dao->atualizarStatus($id, 'aceito');
+            $this->criarConversaSeNecessaria((int) $id);
 
             try {
                 $notificacao = new Notificacao(

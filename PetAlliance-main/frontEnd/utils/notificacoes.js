@@ -83,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 container.innerHTML = h;
             }
 
+            renderLista(data.matchRecebidas, document.getElementById("notif-match-recebidas-list"), '\u26A0', '#f57c00', 'Nenhuma solicitação de match pendente.');
             renderLista(data.matchAceitos, document.getElementById("notif-match-aceitos-list"), '\u2713', '#2e7d32', 'Nenhum match aceito.');
             renderLista(data.matchRecusados, document.getElementById("notif-match-recusados-list"), '\u2717', '#d32f2f', 'Nenhum match recusado.');
             renderLista(data.outras, document.getElementById("notif-outras-list"), '\u2139', '#2e7d32', 'Nenhuma notificação.');
