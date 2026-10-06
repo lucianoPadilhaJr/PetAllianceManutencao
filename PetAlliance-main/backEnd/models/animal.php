@@ -16,6 +16,19 @@ class Animal implements JsonSerializable {
     private $foto_certificado;
     private $foto_vacina;
 
+    private static function normalizarTextoPersistido($valor) {
+        $valor = trim((string) $valor);
+        $mapa = [
+            'FÃªmea' => 'Fêmea',
+            'MÃ©dio' => 'Médio',
+            'MÃ©dia' => 'Média',
+            'CÃ£es' => 'Cães',
+            'GÃªnero' => 'Gênero',
+        ];
+
+        return $mapa[$valor] ?? $valor;
+    }
+
     private $id;
     private $favoritado;
     private $fotos = [];
@@ -90,15 +103,15 @@ class Animal implements JsonSerializable {
     }
 
     public function getSexo() {
-        return $this->sexo;
+        return self::normalizarTextoPersistido($this->sexo);
     }
 
     public function getTipo() {
-        return $this->tipo;
+        return self::normalizarTextoPersistido($this->tipo);
     }
 
     public function getPorte() {
-        return $this->porte;
+        return self::normalizarTextoPersistido($this->porte);
     }
 
     public function getDataNascimento() {
@@ -167,26 +180,29 @@ class Animal implements JsonSerializable {
     }
 
     public function setSexo($sexo) {
-        if (!in_array($sexo, ["Macho", "Fêmea"], true)) {
+        $sexoNormalizado = self::normalizarTextoPersistido($sexo);
+        if (!in_array($sexoNormalizado, ["Macho", "Fêmea"], true)) {
             throw new Exception("Sexo inválido.");
         }
-        $this->sexo = $sexo;
+        $this->sexo = $sexoNormalizado;
     }
 
     public function setTipo($tipo) {
+        $tipoNormalizado = self::normalizarTextoPersistido($tipo);
         $permitidos = ["Cachorro", "Gato", "Cavalo", "Outro"];
-        if (!in_array($tipo, $permitidos, true)) {
+        if (!in_array($tipoNormalizado, $permitidos, true)) {
             throw new Exception("Tipo inválido. Selecione: Cachorro, Gato, Cavalo ou Outro.");
         }
-        $this->tipo = $tipo;
+        $this->tipo = $tipoNormalizado;
     }
 
     public function setPorte($porte) {
-        if (!in_array($porte, ["Pequeno", "Médio", "Grande"], true)) {
+        $porteNormalizado = self::normalizarTextoPersistido($porte);
+        if (!in_array($porteNormalizado, ["Pequeno", "Médio", "Grande"], true)) {
             throw new Exception("Porte inválido.");
         }
     
-        $this->porte = $porte;
+        $this->porte = $porteNormalizado;
     }
     
     public function setDtNascimento($dt_nascimento) {

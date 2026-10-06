@@ -1,4 +1,15 @@
-﻿<div style="max-width:600px;margin:0 auto; padding: 5rem;">
+﻿<?php
+function normalizarValorEditavel($valor) {
+    $mapa = [
+        'FÃªmea' => 'Fêmea',
+        'MÃ©dio' => 'Médio',
+    ];
+
+    return $mapa[trim((string) $valor)] ?? trim((string) $valor);
+}
+?>
+
+<div style="max-width:600px;margin:0 auto; padding: 5rem;">
   <form method="POST" enctype="multipart/form-data">
     <a href="/backEnd/home.php" class="btn-back">&larr;</a>
     <h1 class="form-title">Editar Animal</h1>
@@ -67,14 +78,14 @@
     <select class="form-input" name="sexo" id="sexo" required>
       <option value="" disabled>Selecione</option>
       <option value="Macho" <?= $animal->getSexo() === 'Macho' ? 'selected' : '' ?>>Macho</option>
-      <option value="F&ecirc;mea" <?= $animal->getSexo() === 'FÃªmea' ? 'selected' : '' ?>>FÃªmea</option>
+      <option value="F&ecirc;mea" <?= normalizarValorEditavel($animal->getSexo()) === 'Fêmea' ? 'selected' : '' ?>>F&ecirc;mea</option>
     </select>
 
     <label class="form-label" for="porte">Porte:</label>
     <select class="form-input" name="porte" id="porte" required>
       <option value="" disabled>Selecione</option>
       <option value="Pequeno" <?= $animal->getPorte() === 'Pequeno' ? 'selected' : '' ?>>Pequeno</option>
-      <option value="M&eacute;dio" <?= $animal->getPorte() === 'MÃ©dio' ? 'selected' : '' ?>>M&eacute;dio</option>
+      <option value="M&eacute;dio" <?= normalizarValorEditavel($animal->getPorte()) === 'Médio' ? 'selected' : '' ?>>M&eacute;dio</option>
       <option value="Grande" <?= $animal->getPorte() === 'Grande' ? 'selected' : '' ?>>Grande</option>
     </select>
 
