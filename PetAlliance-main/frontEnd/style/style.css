@@ -94,6 +94,36 @@ html, body {
 }
 
 /* --- GLOBAL: forms === */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  z-index: 2000;
+  background: var(--primary);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
 .form-input {
   width: 100%;
   padding: 0.55rem 0.75rem;
@@ -105,8 +135,20 @@ html, body {
   box-sizing: border-box;
 }
 
-.form-input:focus {
+.form-input:focus,
+.btn:focus-visible,
+.btn-back:focus-visible,
+.navbar-btn:focus-visible,
+.dialog-menu-close:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(90, 126, 255, 0.5);
+  outline-offset: 2px;
   border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(90, 126, 255, 0.2);
 }
 
 .form-label {

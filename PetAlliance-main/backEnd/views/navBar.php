@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/frontEnd/style/estilos.css">
 </head>
 <body>
+    <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo</a>
     <nav class="navbar">
         <div class="navbar-left">
             <img src="/frontEnd/assets/images/logo.webp" alt="PetAlliance" class="navbar-logo">
