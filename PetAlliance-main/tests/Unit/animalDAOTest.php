@@ -78,6 +78,17 @@ class animalDAOTest extends TestCase
         $this->assertCount(2, $animal->getFotos());
     }
 
+    public function testSetSexoEsetPorte_DeveNormalizarValoresComCaracteresCorrompidos(): void
+    {
+        $animal = new Animal(1, 'Rex', 'Vira-lata', 'Marrom', 'Macho', 'Cachorro', 'Grande', '2022-01-15', 12.5, 'Descrição', 1, 0, null, null);
+
+        $animal->setSexo('FÃªmea');
+        $animal->setPorte('MÃ©dio');
+
+        $this->assertSame('Fêmea', $animal->getSexo());
+        $this->assertSame('Médio', $animal->getPorte());
+    }
+
     // ----------------------------------------------------------------
     //  favoritarAnimal()
     // ----------------------------------------------------------------
